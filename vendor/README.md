@@ -1,0 +1,3 @@
+| Lang | Version                               | Source                                                                                                                                                      |
+| ---- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Lua  | 5.4.2 (Close enough to 5.4.4 to work) | [https://luabinaries.sourceforge.net/](https://sourceforge.net/projects/luabinaries/files/5.4.2/Linux%20Libraries/lua-5.4.2_Linux54_64_lib.tar.gz/download) |

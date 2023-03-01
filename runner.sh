@@ -1,3 +1,3 @@
 #!/bin/ash
 
-hyperfine 'sleep 1'
+hyperfine '/home/langs/lua/echo'
