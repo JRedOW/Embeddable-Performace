@@ -1,3 +1,5 @@
 #!/bin/ash
 
-hyperfine '/home/langs/lua/echo'
+hyperfine --warmup 100 --runs 500 \
+    '/home/langs/lua/echo' \
+    '/home/langs/luajit/echo'
