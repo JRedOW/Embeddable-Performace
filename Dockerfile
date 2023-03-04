@@ -49,6 +49,26 @@ ADD ./langs/luajit/ /home/
 RUN g++ -o bin/echo echo.cpp -Llib -lluajit-5.1
 
 
+###     Rhai     ###
+FROM alpine:3.17 as rhai
+
+RUN apk add --no-cache curl libc-dev gcc
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+WORKDIR /home
+
+RUN mkdir bin
+
+RUN /root/.cargo/bin/cargo search rhai --limit 0
+
+ADD ./langs/rhai/ /home/
+
+RUN /root/.cargo/bin/cargo build --release
+
+RUN cp /home/target/release/echo /home/bin/echo
+
+
 ###     Runner     ###
 FROM alpine:3.17
 
@@ -64,5 +84,8 @@ COPY --from=lua /home/bin /home/langs/lua
 ##   LUAJIT   ##
 COPY --from=luajit /home/bin /home/langs/luajit 
 COPY --from=luajit /usr/local/lib/libluajit-5.1.so.2 /usr/local/lib/libluajit-5.1.so.2
+
+##   Rhai   ##
+COPY --from=rhai /home/bin /home/langs/rhai 
 
 CMD ["/home/runner.sh"]

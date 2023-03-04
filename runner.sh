@@ -2,4 +2,5 @@
 
 hyperfine --warmup 100 --runs 500 \
     '/home/langs/lua/echo' \
-    '/home/langs/luajit/echo'
+    '/home/langs/luajit/echo' \
+    '/home/langs/rhai/echo'
