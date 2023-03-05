@@ -1,0 +1,11 @@
+[package]
+name = "rhai"
+version = "0.1.0"
+edition = "2021"
+authors = ["Joseph <joseph@dualvs.com>"]
+
+[[bin]]
+name = "echo"
+
+[dependencies]
+rune = "0.12.1"

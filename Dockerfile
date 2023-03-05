@@ -69,6 +69,26 @@ RUN /root/.cargo/bin/cargo build --release
 RUN cp /home/target/release/echo /home/bin/echo
 
 
+###     Rune     ###
+FROM alpine:3.17 as rune
+
+RUN apk add --no-cache curl libc-dev gcc
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+WORKDIR /home
+
+RUN mkdir bin
+
+RUN /root/.cargo/bin/cargo search rune --limit 0
+
+ADD ./langs/rune/ /home/
+
+RUN /root/.cargo/bin/cargo build --release
+
+RUN cp /home/target/release/echo /home/bin/echo
+
+
 ###     Runner     ###
 FROM alpine:3.17
 
@@ -86,6 +106,9 @@ COPY --from=luajit /home/bin /home/langs/luajit
 COPY --from=luajit /usr/local/lib/libluajit-5.1.so.2 /usr/local/lib/libluajit-5.1.so.2
 
 ##   Rhai   ##
-COPY --from=rhai /home/bin /home/langs/rhai 
+COPY --from=rhai /home/bin /home/langs/rhai
+
+##   Rune   ##
+COPY --from=rune /home/bin /home/langs/rune
 
 CMD ["/home/runner.sh"]
