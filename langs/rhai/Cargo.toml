@@ -7,6 +7,9 @@ authors = ["Joseph <joseph@dualvs.com>"]
 [[bin]]
 name = "echo"
 
+[[bin]]
+name = "fib"
+
 [dependencies]
 indoc = "2"
 rhai = "1.12.0"

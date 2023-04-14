@@ -20,6 +20,7 @@ RUN mkdir bin
 ADD ./langs/lua/ /home/
 
 RUN g++ -o bin/echo echo.cpp -Llib -llua
+RUN g++ -o bin/fib fib.cpp -Llib -llua
 
 
 ###     LUAJIT     ###
@@ -47,6 +48,7 @@ RUN mkdir bin
 ADD ./langs/luajit/ /home/
 
 RUN g++ -o bin/echo echo.cpp -Llib -lluajit-5.1
+RUN g++ -o bin/fib fib.cpp -Llib -lluajit-5.1
 
 
 ###     Rhai     ###
@@ -67,6 +69,7 @@ ADD ./langs/rhai/ /home/
 RUN /root/.cargo/bin/cargo build --release
 
 RUN cp /home/target/release/echo /home/bin/echo
+RUN cp /home/target/release/fib /home/bin/fib
 
 
 ###     Rune     ###
@@ -87,6 +90,7 @@ ADD ./langs/rune/ /home/
 RUN /root/.cargo/bin/cargo build --release
 
 RUN cp /home/target/release/echo /home/bin/echo
+RUN cp /home/target/release/fib /home/bin/fib
 
 
 ###     Runner     ###

@@ -7,5 +7,8 @@ authors = ["Joseph <joseph@dualvs.com>"]
 [[bin]]
 name = "echo"
 
+[[bin]]
+name = "fib"
+
 [dependencies]
 rune = "0.12.1"
