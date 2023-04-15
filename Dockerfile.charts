@@ -1,0 +1,13 @@
+FROM python:slim
+
+RUN pip install numpy matplotlib scipy
+
+WORKDIR /home
+
+ADD ./scripts/ /home/
+
+ADD ./output/ /home/output/
+
+ADD ./charts.sh /home/charts.sh
+
+CMD ["/home/charts.sh"]
