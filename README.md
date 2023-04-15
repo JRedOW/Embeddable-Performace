@@ -16,3 +16,8 @@ All that is needed is [docker](https://docs.docker.com/get-docker/)
 ## Running
 
 `docker run --rm -it embeddableperformance`
+
+## Generating Paper
+
+`docker build . -f Dockerfile.paper -t embeddableperformance:paper`
+`docker run --rm -it --mount type=bind,source=$(pwd)/output,target=/data/output embeddableperformance:paper` or PowerShell `docker run --rm -it --mount type=bind,source=${PWD}/output,target=/data/output embeddableperformance:paper`
