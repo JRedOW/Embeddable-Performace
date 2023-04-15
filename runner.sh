@@ -15,3 +15,6 @@ hyperfine --warmup 10 --runs 50 \
     '/home/langs/rune/fib' \
     --export-markdown output/fib.md \
     --export-json output/fib.json
+
+awk -F '|' '{ print "|", $2, "|", $3, "|" }' output/echo.md > output/echo-min.md
+awk -F '|' '{ print "|", $2, "|", $3, "|" }' output/fib.md > output/fib-min.md

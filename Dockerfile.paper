@@ -29,6 +29,12 @@ RUN apt-get update && apt-get install -qy python-pygments && rm -rf /var/lib/apt
 RUN tlmgr install biber
 RUN tlmgr install biblatex-ieee
 
+RUN tlmgr install markdown
+RUN tlmgr install paralist
+RUN tlmgr install csvsimple
+RUN tlmgr install pgf
+RUN tlmgr install gobble
+
 ADD ./paper/ /data/
 
 ADD ./paper.sh /data/paper.sh
