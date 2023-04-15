@@ -1,2 +1,88 @@
 \section{Analysis} \label{sec:analysis}
-Analysis section
+The analysis section will be split into sections with one for each separate performance test. First there will be a general analysis of performance. Then, there will be small breakout analyses containing only a selection of languages. This will allow for more useful data on specific groups of languages which may compete within a subjective area. Read Section \ref{sec:discussion:importance} for the reasoning behind this.
+
+The first sections will specifically compare Lua and LuaJIT. Both embeddable systems use the language, Lua. This makes a direct comparison useful to developers looking to implement Lua specifically.
+
+The second section will specifically compare Rhai and Rune. Both embeddable languages are implemented and deeply integrated into the popular compiled language Rust. Deep integration means that the host program can easily pass information between host and script, easily share functions and variables to the script, and have a greater level of integrated control via the host language's standardized features. For programmers that are creating host programs that need/want deep integration between host and embeddable language and are written in Rust can use this comparison.
+
+Finally, the last section quickly compares the performance winners of the previous sections. This allows for an understanding about the impact of specific subjective choices made, and gives a wider view of the results without an information overload.
+
+\subsection{Echo (Embeddable Performance)} \label{sec:analysis:echo}
+As shown by Figure~\ref{fig:echo-h} the Lua based languages performed similarly, with Rust based languages performing similarly. The Lua based languages performed better, but that is for later. The interesting general facts is that this test showed much higher randomness that any other test, despite one of the most reproduced tests, with the standard deviation being nearly 10 percent of the mean for some languages as shown in Table~\ref{tab:echo}. This test also showed a heavy right skew, with many outliers seen in Figure~\ref{fig:echo-w} and a visual skew shown in Figure~\ref{fig:echo-h}. This cooperated by hyperfine detecting many outliers multiple times, but only for echo. This strange phenomenon of the embedding performance being so unstable needs further study, and is out of scope of this paper.
+
+\subsubsection{Lua}
+In consistence with common knowledge, LuaJIT performed better than Lua. The small difference shown here will be exaggerated as continued testing of language performance is performed, as the performance difference is likely the benefits of JIT on the slight amount language performance that makes up a greater percentage of the execution time of the execution.
+
+The more interesting observation is that LuaJIT was the least skewed language of all languages, as shown in Figure~\ref{fig:echo-h}, with a clear bell shape that is only slightly skewed to the right. In the future, continued testing of other JIT compiled embeddable languages may make this a theme.
+
+\begin{figure}[H]
+	\centering
+		\includegraphics[width=0.40\textwidth]{output/echo-lua.pdf}
+	\caption{Lua Echo Results}
+	\label{fig:echo-lua}
+\end{figure}
+
+\subsubsection{Rust}
+Both languages showed an extreme level of skew, with a barely visible bell curve. The graphs almost looks like a slide on a playground. Continued research on whether Rust itself caused this interesting result, or is it simply a theme more visible in these languages may be useful for both embeddable languages and Rust itself.
+
+Rune slightly outperformed Rhai, and this difference is continually seen throughout the results. 
+
+\begin{figure}[H]
+	\centering
+		\includegraphics[width=0.40\textwidth]{output/echo-rust.pdf}
+	\caption{Rust Echo Results}
+	\label{fig:echo-rust}
+\end{figure}
+
+\subsubsection{Conclusion}
+LuaJIT shows an extremely higher level of performance compared to Rune that will be seen throughout this test. Whether this simply due to design reasons or the fact the LuaJIT has over a decade more development under its belt is yet to be seen, and highlights the importance of the reproducibility and ease of updating this experiment that were its initial goals.
+
+\begin{figure}[H]
+	\centering
+		\includegraphics[width=0.40\textwidth]{output/echo-con.pdf}
+	\caption{Echo Conclusion}
+	\label{fig:echo-con}
+\end{figure}
+
+\subsection{Fibonacci Sequence (Recursive Performance)} \label{sec:analysis:fib}
+This test, as expressed earlier, is to test the performance of recursive functions written in the embeddable languages and therefore the performance of the stack. Figure~\ref{fig:fib-h} shows the difference in languages clear as day. The extremely clear difference between languages is why performance tests such as this are so important for developers to take into account.
+
+An interesting observation is that despite having such a smaller sample size (only running 50 times), all languages showed a smaller standard deviation to mean ratio and much less of a skew than in the Echo as shown in Table~\ref{tab:fib} and Figure~\ref{fig:fib-h}, with LuaJIT being the only outlier, which we talk about later. This shows that the performance skew seen earlier was either impacted by either startup performance of the language or embedding performance, or possibly both. Future testing is needed, as the cause of this oddity is outside the scope of this paper.
+
+\subsubsection{Lua}
+As expected, LuaJIT smoked Lua (along with all languages). This clearly shows the benefits of replacing interpretation (converting the script to machine code while executing) with JIT (compiling the script at run-time before execution). This difference is the reason why other important embeddable languages such as v8\cite{v8} have been designed around this JIT compilation design.
+
+The more interesting observation is that LuaJIT showed a heavy skew despite being the languages that showed the least skew in echo. This means that languages performance (most likely stack performance) is the culprit. Perhaps this is a possible location of future language performance gains by stabilizing the performance.
+
+Another very interesting observation is it takes less time for Lua to calculate the fibonacci 1000 times than echo 100,000. This was not observed in any other languages. This leads me to believe, since embedding the language is in both tests, that the conversion of a C++ String (the host language) to a Lua String and vice versa greatly impacts performance. This is definitely a spot I would recommend to be looked at for performance gains in LuaJIT.
+
+\begin{figure}[H]
+	\centering
+		\includegraphics[width=0.40\textwidth]{output/fib-lua.pdf}
+	\caption{Lua Fibonacci Results}
+	\label{fig:fib-lua}
+\end{figure}
+
+\subsubsection{Rust}
+Rhai's AST walker\cite{rhai:walker} rears it ugly head here, greatly impacting performance. Table~\ref{tab:fib} shows that Rhai takes about 20 slower than LuaJIT! AST walkers, while can be perfectly efficient at times, clearly can not handle the large tree required for deep recursion well.
+
+Both Rune and Rhai held a relatively stable level of performance with low standard deviations as shown in Table~\ref{tab:fib} and roughly normal bell curves in Figure~\ref{fig:fib-rust}.
+
+\begin{figure}[H]
+	\centering
+		\includegraphics[width=0.40\textwidth]{output/fib-rust.pdf}
+	\caption{Rust Fibonacci Results}
+	\label{fig:fib-rust}
+\end{figure}
+
+\subsubsection{Conclusion}
+While Rune performed well, it still can not hold a candle to LuaJIT's incredibly impressive performance. This is also an extremely important test for rune, as it is run as a stack-based virtual machine.\cite{rune:stack} Rune may continue to improve in this test, as long term issues such as \#237\cite{rune:JIT} that have recently gotten attention in the development Discord may lead to huge performance leaps.
+
+Clearly, at this time, if recursion is heavily used in the scripts, LuaJIT should be the embeddable system of choice.
+
+\begin{figure}[H]
+	\centering
+		\includegraphics[width=0.40\textwidth]{output/fib-con.pdf}
+	\caption{Fibonacci Conclusion}
+	\label{fig:fib-con}
+\end{figure}

@@ -28,6 +28,14 @@ python histogram.py \
     --sel-labels Rhai,Rune \
     /home/output/echo.json
 
+# Conclusion
+python histogram.py \
+    --output /home/output/echo-con.pdf \
+    --bins 100 \
+    --labels Lua,LuaJIT,Rhai,Rune \
+    --sel-labels LuaJIT,Rune \
+    /home/output/echo.json
+
 ## FIB
 python histogram.py \
     --output /home/output/fib-h.pdf \
@@ -54,4 +62,12 @@ python histogram.py \
     --bins 100 \
     --labels Lua,LuaJIT,Rhai,Rune \
     --sel-labels Rhai,Rune \
+    /home/output/fib.json
+
+# Conclusion
+python histogram.py \
+    --output /home/output/fib-con.pdf \
+    --bins 100 \
+    --labels Lua,LuaJIT,Rhai,Rune \
+    --sel-labels LuaJIT,Rune \
     /home/output/fib.json
