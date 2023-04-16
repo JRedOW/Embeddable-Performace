@@ -21,6 +21,7 @@ ADD ./langs/lua/ /home/
 
 RUN g++ -o bin/echo echo.cpp -Llib -llua
 RUN g++ -o bin/fib fib.cpp -Llib -llua
+RUN g++ -o bin/math math.cpp -Llib -llua
 
 
 ###     LUAJIT     ###
@@ -49,6 +50,7 @@ ADD ./langs/luajit/ /home/
 
 RUN g++ -o bin/echo echo.cpp -Llib -lluajit-5.1
 RUN g++ -o bin/fib fib.cpp -Llib -lluajit-5.1
+RUN g++ -o bin/math math.cpp -Llib -lluajit-5.1
 
 
 ###     Rhai     ###
@@ -70,6 +72,7 @@ RUN /root/.cargo/bin/cargo build --release
 
 RUN cp /home/target/release/echo /home/bin/echo
 RUN cp /home/target/release/fib /home/bin/fib
+RUN cp /home/target/release/math /home/bin/math
 
 
 ###     Rune     ###
@@ -91,6 +94,7 @@ RUN /root/.cargo/bin/cargo build --release
 
 RUN cp /home/target/release/echo /home/bin/echo
 RUN cp /home/target/release/fib /home/bin/fib
+RUN cp /home/target/release/math /home/bin/math
 
 
 ###     Runner     ###

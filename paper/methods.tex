@@ -71,3 +71,24 @@ To test recursive performance, there is a test containing a version of the Fibon
 The act of a function referencing itself is known as recursion. While this version of the Fibonacci Sequence is extremely inefficient, and this level of recursion is never used in reasonable programming, it does exasperate the performance hit of recursion. Recursive functions punish the performance of the stack\cite{recursion:performance} and therefore this script exemplifies the performance of the stack. Since the stack is an important building block of embeddable languages (especially when we have deeply nested functions executed) this tests a common language performance barrios. Each time the function calls itself, another entry is added to the stack. This causes an exponential growth in push (additions to the stack) and pop (removal from the stack) calls during the execution of the script.
 
 This script written in the embeddable language is ran 1000 times per execution. This function has 10 warmups and 50 measured runs for each language. The low number of runs is due to poor performance in a few languages, which we will see in the data.
+
+\subsubsection{Mathematical Performance}
+To test language performance at the purest form, there is a test containing a series of math equations. The embeddable language will take an float (which is a non-whole number in computers), all tests use 9, as a parameter of a function. This function repeatedly sets the parameter to itself, performing one of the 4 base mathematical functions (addition, subtraction, multiplication, and division). First it multiplies the parameter by 11. Next, it subtracts 1. Then it divides by 3, forcing the float to be rounded. Finally, it adds 5 and returns the final number. Observe an example of this process written in the embeddable language Lua below in Listing~\ref{lst:lua-math}.
+
+\begin{listing}[H]
+    \begin{minted}{lua}
+    function math(n)
+        n = n * 11
+        n = n - 1
+        n = n / 3
+        n = n + 5
+        return n
+    end
+    \end{minted}
+    \caption{The Math Test Script In Lua}
+    \label{lst:lua-math}
+\end{listing}
+
+This function also tests the performance of assignment, as the variable n is rewritten 4 times. Assigning variables and mathematical functions are commonly used in scripts that add functionality to host programs, even when the majority of logic is actually written in the host language. Therefore this test is critical to study.
+
+This script written in the embeddable language is ran 100000 times per execution. This function has 100 warmups and 500 measured runs for each language.

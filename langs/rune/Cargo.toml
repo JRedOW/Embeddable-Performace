@@ -10,5 +10,8 @@ name = "echo"
 [[bin]]
 name = "fib"
 
+[[bin]]
+name = "math"
+
 [dependencies]
 rune = "0.12.1"

@@ -71,3 +71,39 @@ python histogram.py \
     --labels Lua,LuaJIT,Rhai,Rune \
     --sel-labels LuaJIT,Rune \
     /home/output/fib.json
+
+## MATH
+python histogram.py \
+    --output /home/output/math-h.pdf \
+    --bins 100 \
+    --labels Lua,LuaJIT,Rhai,Rune \
+    /home/output/math.json
+
+python whisker.py \
+    --output /home/output/math-w.pdf \
+    --labels Lua,LuaJIT,Rhai,Rune \
+    /home/output/math.json
+
+# Lua
+python histogram.py \
+    --output /home/output/math-lua.pdf \
+    --bins 100 \
+    --labels Lua,LuaJIT,Rhai,Rune \
+    --sel-labels Lua,LuaJIT \
+    /home/output/math.json
+
+# Rust
+python histogram.py \
+    --output /home/output/math-rust.pdf \
+    --bins 100 \
+    --labels Lua,LuaJIT,Rhai,Rune \
+    --sel-labels Rhai,Rune \
+    /home/output/math.json
+
+# Conclusion
+python histogram.py \
+    --output /home/output/math-con.pdf \
+    --bins 100 \
+    --labels Lua,LuaJIT,Rhai,Rune \
+    --sel-labels LuaJIT,Rune \
+    /home/output/math.json

@@ -86,3 +86,44 @@ Clearly, at this time, if recursion is heavily used in the scripts, LuaJIT shoul
 	\caption{Fibonacci Conclusion}
 	\label{fig:fib-con}
 \end{figure}
+
+\subsection{Math (Mathematical Performance)} \label{sec:analysis:math}
+This test, as expressed earlier, is to test the performance of mathematical written in the embeddable languages and variable assignment. This is an important factor in real life performance of embeddable languages. Figure~\ref{fig:math-h} shows the standard difference we've come to expect, with LuaJIT performing extraordinarily, Lua on its tail, Rune a distance away, and Rhai coming in the rear.
+
+Similar to the Fibonacci Sequence tests, we see roughly normal bell curve for all languages, this time including LuaJIT. This once again backs the previous conclusion that the strange skew seen in the echo test is caused by either embedding performance or the conversion of strings from the host language to embedded language and vice versa. This does not mean that there is no skew though. Similar to all the other tests, Table~\ref{tab:math} shows that all outliers are greater than the mean. This is expected, as we would assume that external factors would occasionally decrease performance (no environment is truly isolated from outside performance impacts), but never increase performance as there are no random events that cause a program to speed up in a singular execution.
+
+\subsubsection{Lua}
+As expected, LuaJIT outperformed Lua. The impressive thing is LuaJIT likely performed much better than expressed. This is due to the fact that many executions were near or less than 5 milliseconds. Due to external factors, hyperfine can not accurately measure any execution shorter (or around) 5 milliseconds, becoming slightly inaccurate. This is because hyperfine can no longer predict the performance impact of running the command through itself rather than through standalone means.
+
+I will note that the high number of positive outliers, some of the being extremely distant from the mean, within Lua is a worry. Perhaps future research should attempt to find the culprit, as those outliers are numerous and great enough to have visible effects on performance in real life scenarios.
+
+Finally, we see a repeat in the fact that LuaJIT (and Lua) perform this test much faster than the echo test when comparing Table~\ref{tab:echo} and Table~\ref{tab:math}. The performance difference is even more grave here as the script function is run just as many times as in the original echo test. This reinforces that the performance of passing strings to and from the host language and embedded language is a major pain-point. I would strongly encourage this functionality to be worked on, and for performance to be improved. I definitely believe that this issue impact real life performance scenarios.
+
+\begin{figure}[H]
+	\centering
+		\includegraphics[width=0.40\textwidth]{output/math-lua.pdf}
+	\caption{Lua Math Results}
+	\label{fig:math-lua}
+\end{figure}
+
+\subsubsection{Rust}
+As seen in previous tests Rune has a good performance lead on Rhai, though this test definitely makes them more competitive than teh Fibonacci Sequence.
+
+The worry seen in Figure~\ref{fig:math-rust} is that despite executions forming a seeming relatively normal bell curves, the outlier issue shows more strongly in Rune and Rhai than LuaJIT (and possibly even Lua) in Table~\ref{tab:math}, where each dot is an outlier. While Rust could be the culprit, I have not seen such results in Rust performance, and therefore I believe it is some factor within these languages. Further research that is outside the scope of this paper is required.
+
+\begin{figure}[H]
+	\centering
+		\includegraphics[width=0.40\textwidth]{output/math-rust.pdf}
+	\caption{Rust Math Results}
+	\label{fig:math-rust}
+\end{figure}
+
+\subsubsection{Conclusion}
+Once again LuaJIT performed much stronger than Rune, its Rust competitor. Due to this test being based so heavily based on the performance metrics relevant to real life scenarios, I simply cannot recommend Rune for any task where performance of teh embeddable language is important. Read Section \ref{sec:discussion:importance} on reasons to use Rune instead of LuaJIT.
+
+\begin{figure}[H]
+	\centering
+		\includegraphics[width=0.40\textwidth]{output/math-con.pdf}
+	\caption{Math Conclusion}
+	\label{fig:math-con}
+\end{figure}

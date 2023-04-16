@@ -10,6 +10,9 @@ name = "echo"
 [[bin]]
 name = "fib"
 
+[[bin]]
+name = "math"
+
 [dependencies]
 indoc = "2"
 rhai = "1.12.0"
