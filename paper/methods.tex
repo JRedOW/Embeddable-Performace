@@ -41,7 +41,7 @@ Each test file contains the required boilerplate code to initialize the embeddab
         return 0;
     }
     \end{minted}
-    \caption{The Echo Test For LuaJIT}
+    \caption{The Echo Test For LuaJIT in C++}
     \label{lst:luajit-echo}
 \end{listing}
 
@@ -92,3 +92,10 @@ To test language performance at the purest form, there is a test containing a se
 This function also tests the performance of assignment, as the variable n is rewritten 4 times. Assigning variables and mathematical functions are commonly used in scripts that add functionality to host programs, even when the majority of logic is actually written in the host language. Therefore this test is critical to study.
 
 This script written in the embeddable language is ran 100000 times per execution. This function has 100 warmups and 500 measured runs for each language.
+
+\subsection{Languages}
+While I wish I could test every embeddable language, between my lack technical experience in certain fields required, complicated build process I do not know, the size of this paper, and a need to minimize the information overload this paper could create, it is simply not feasible to test every language. I therefore decided to test 4 embeddable languages that can be separated into 2 groups.
+
+The first group is Lua and LuaJIT. Both embeddable systems allow for the embedding of the same language Lua. Lua is the official Lua interpreter, while LuaJIT is a semi-official system created by the same programmer. LuaJIT is interesting as it uses JIT, or "Just In Time" compilation. This can lead to massive performance gains, but makes the program much more complicated, and causes issues on locked down platforms.
+
+The second group is Rune and Rhai. Both languages are much (over 10 years) younger than both Lua and LuaJIT, giving some representation to younger, and possibly hungrier, languages. Both embeddable languages are also deeply integrated into their shared host language, Rust. This means that programmers in Rust have a high level of control over and interoperability with the embeddable language that is easy to setup and manage.
