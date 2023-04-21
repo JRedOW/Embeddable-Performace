@@ -29,9 +29,7 @@ Each test file contains the required boilerplate code to initialize the embeddab
             lua_getglobal(L, "echo");
             lua_pushlstring(L, s.c_str(), s.size());
 
-            if (lua_pcall(L, 1, 1, 0) != 0) {
-                luaL_error(L, "...", lua_tostring(L, -1));
-            }
+            // CALL LUA FUNCTION
 
             std::string res(lua_tostring(L, -1));
 
