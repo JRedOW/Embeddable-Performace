@@ -1,18 +1,18 @@
 \section{Discussion} \label{sec:discussion}
 
 \subsection{Scope of Conclusions} \label{sec:discussion:importance}
-When looking at the analysis paper, remember that all results must be review along withe the specific needs and situation of the host program. The performance of an embeddable language does not exist in a vacuum.
+When looking at the analysis paper, remember that all results must be reviewed along with the specific needs and situation of the host program. The performance of an embeddable language does not exist in a vacuum.
 
-For example, a program may not need the highest level of performance, as the majority of script logic is simply calls to internal logic (where the embeddable language's performance does not matter). Therefore, the program's designer may decide to use Rhai or Rune due to their deep integration with the rust programming language.
+For example, a program may not need the highest level of performance, as the majority of script logic is simply calls to internal logic (where the embeddable language's performance does not matter). Therefore, the program's designer may decide to use Rhai or Rune due to their deep integration with the Rust programming language.
 
-Another equally valid reasoning may be to meet requirements of a program such as platform support. LuaJIT has issues running in certain locked down environments\cite{luajit:consoles} (such as mobile devices, gaming consoles, cars, etc.) so a programer may choose to use Lua do to its cross platform nature despite the decreased performance.
+Another equally valid reasoning may be to meet requirements of a program such as platform support. LuaJIT has issues running in certain locked down environments\cite{luajit:consoles} (such as mobile devices, gaming consoles, cars, etc.) so a programmer may choose to use Lua do to its cross platform nature despite the decreased performance.
 
 \subsection{Future}
 
 \subsubsection{Updating Langauges}
-As with all technology, embeddable languages are updated over time. These updates often improve performance and cause past metrics and benchmarks to be quickly made obsolete, as mentioned earlier. This test specifically was designed to only require a few line changes within the build file to update the version of a embeddable language, making maintenance of the metrics trivial and non-time consuming.
+As with all technology, embeddable languages are updated over time. These updates often improve performance and cause past metrics and benchmarks to be quickly made obsolete, as mentioned earlier. This set of tests was specifically designed to only require a few line changes within the build file to update the version of an embeddable language, making maintenance of the metrics trivial and non-time consuming.
 
 \subsubsection{Expanding Scope}
 The great thing about the methods of reproducibility used within this experiment is that new languages can be added easily. During the development of these tests both JavaScript/ECMAScript (via Google's v8 Engine\cite{v8} used in Google Chrome, Brave, Node.JS, and Microsoft Edge) and Luau (a fork of Lua created by Roblox\cite{luau}) were attempted to be added, but both required complicated tooling and/or did not support the methods I used for easy reproducibility at this time. With more specialized knowledge in these languages and their specific build toolchains it may be possible to add them to this experiment without compromising its goals. This also goes for the many embeddable languages which did not have a chance to join this test.
 
-I do plan on continuing this project by updating the versions of the embeddable languages, adding more languages, and publishing future papers covering continued results.
+I plan on continuing this project by updating the versions of the embeddable languages, adding more languages, and publishing future papers covering continued results.

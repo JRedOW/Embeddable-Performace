@@ -8,10 +8,10 @@ The second section will specifically compare Rhai and Rune. Both embeddable lang
 Finally, the last section quickly compares the performance winners of the previous sections. This allows for an understanding about the impact of specific subjective choices made, and gives a wider view of the results without an information overload.
 
 \subsection{Echo (Embeddable Performance)} \label{sec:analysis:echo}
-As shown by Figure~\ref{fig:echo-h} the Lua based languages performed similarly, with Rust based languages performing similarly. The Lua based languages performed better, but that is for later. The interesting general facts is that this test showed much higher randomness that any other test, despite one of the most reproduced tests, with the standard deviation being nearly 10 percent of the mean for some languages as shown in Table~\ref{tab:echo}. This test also showed a heavy right skew, with many outliers seen in Figure~\ref{fig:echo-w} and a visual skew shown in Figure~\ref{fig:echo-h}. This cooperated by hyperfine detecting many outliers multiple times, but only for echo. This strange phenomenon of the embedding performance being so unstable needs further study, and is out of scope of this paper.
+As shown by Figure~\ref{fig:echo-h} the Lua based languages performed similarly, with Rust based languages performing similarly. The Lua based languages performed better, but that is for later. The interesting general fact is that this test showed much higher randomness than any other test, despite being one of the most reproduced tests, with the standard deviation being nearly 10 percent of the mean for some languages, shown in Table~\ref{tab:echo}. This test also showed a heavy right skew, with many outliers seen in Figure~\ref{fig:echo-w} and a visual skew shown in Figure~\ref{fig:echo-h}. This cooperated by hyperfine detecting many outliers multiple times, but only for echo. This strange phenomenon of the embedding performance being so unstable needs further study, and is out of scope of this paper.
 
 \subsubsection{Lua}
-In consistence with common knowledge, LuaJIT performed better than Lua. The small difference shown here will be exaggerated as continued testing of language performance is performed, as the performance difference is likely the benefits of JIT on the slight amount language performance that makes up a greater percentage of the execution time of the execution.
+In accordance with common knowledge, LuaJIT performed better than Lua. The small difference shown here will be exaggerated as continued testing of language performance is performed, as the performance difference is likely due to the benefits of JIT on the slight amount of language performance that makes up a greater portion of the execution time of the other tests.
 
 The more interesting observation is that LuaJIT was the least skewed language of all languages, as shown in Figure~\ref{fig:echo-h}, with a clear bell shape that is only slightly skewed to the right. In the future, continued testing of other JIT compiled embeddable languages may make this a theme.
 
@@ -23,9 +23,9 @@ The more interesting observation is that LuaJIT was the least skewed language of
 \end{figure}
 
 \subsubsection{Rust}
-Both languages showed an extreme level of skew, with a barely visible bell curve. The graphs almost looks like a slide on a playground. Continued research on whether Rust itself caused this interesting result, or is it simply a theme more visible in these languages may be useful for both embeddable languages and Rust itself.
+Both languages showed an extreme level of skew, with a barely visible bell curve. The graph almost looks like a slide on a playground. Continued research on whether Rust itself caused this interesting result, or is it simply a theme more visible in these languages may be useful for both embeddable languages and Rust itself.
 
-Rune slightly outperformed Rhai, and this difference is continually seen throughout the results. 
+Rune slightly outperformed Rhai, and this difference is continually seen throughout the results.
 
 \begin{figure}[H]
 	\centering
@@ -35,7 +35,7 @@ Rune slightly outperformed Rhai, and this difference is continually seen through
 \end{figure}
 
 \subsubsection{Conclusion}
-LuaJIT shows an extremely higher level of performance compared to Rune that will be seen throughout this test. Whether this simply due to design reasons or the fact the LuaJIT has over a decade more development under its belt is yet to be seen, and highlights the importance of the reproducibility and ease of updating this experiment that were its initial goals.
+LuaJIT shows an extremely higher level of performance compared to Rune that will be seen throughout this test. Whether this is simply due to design reasons or the fact the LuaJIT has over a decade more development under its belt is yet to be seen, and highlights the importance of the reproducibility and ease of updating this experiment that were its initial goals.
 
 \begin{figure}[H]
 	\centering
@@ -52,7 +52,7 @@ An interesting observation is that despite having such a smaller sample size (on
 \subsubsection{Lua}
 As expected, LuaJIT smoked Lua (along with all languages). This clearly shows the benefits of replacing interpretation (converting the script to machine code while executing) with JIT (compiling the script at run-time before execution). This difference is the reason why other important embeddable languages such as v8\cite{v8} have been designed around this JIT compilation design.
 
-The more interesting observation is that LuaJIT showed a heavy skew despite being the languages that showed the least skew in echo. This means that languages performance (most likely stack performance) is the culprit. Perhaps this is a possible location of future language performance gains by stabilizing the performance.
+The more interesting observation is that LuaJIT showed a heavy skew despite being the languages that showed the least skew in echo. This means that language performance (most likely stack performance) is the culprit. Perhaps this is a possible location of future language performance gains by stabilizing the stack's interaction times.
 
 Another very interesting observation is it takes less time for Lua to calculate the fibonacci 1000 times than echo 100,000. This was not observed in any other languages. This leads me to believe, since embedding the language is in both tests, that the conversion of a C++ String (the host language) to a Lua String and vice versa greatly impacts performance. This is definitely a spot I would recommend to be looked at for performance gains in LuaJIT.
 
@@ -88,16 +88,16 @@ Clearly, at this time, if recursion is heavily used in the scripts, LuaJIT shoul
 \end{figure}
 
 \subsection{Math (Mathematical Performance)} \label{sec:analysis:math}
-This test, as expressed earlier, is to test the performance of mathematical written in the embeddable languages and variable assignment. This is an important factor in real life performance of embeddable languages. Figure~\ref{fig:math-h} shows the standard difference we've come to expect, with LuaJIT performing extraordinarily, Lua on its tail, Rune a distance away, and Rhai coming in the rear.
+This test, as expressed earlier, is to test the performance of mathematics written in the embeddable languages and variable assignment. This is an important factor in real life performance of embeddable languages. Figure~\ref{fig:math-h} shows the standard difference we've come to expect, with LuaJIT performing extraordinarily, Lua on its tail, Rune a distance away, and Rhai coming in the rear.
 
-Similar to the Fibonacci Sequence tests, we see roughly normal bell curve for all languages, this time including LuaJIT. This once again backs the previous conclusion that the strange skew seen in the echo test is caused by either embedding performance or the conversion of strings from the host language to embedded language and vice versa. This does not mean that there is no skew though. Similar to all the other tests, Table~\ref{tab:math} shows that all outliers are greater than the mean. This is expected, as we would assume that external factors would occasionally decrease performance (no environment is truly isolated from outside performance impacts), but never increase performance as there are no random events that cause a program to speed up in a singular execution.
+Similar to the Fibonacci Sequence tests, we see a roughly normal bell curve for all languages, this time including LuaJIT. This once again backs the previous conclusion that the strange skew seen in the echo test is caused by either embedding performance or the conversion of strings from the host language to embedded language and vice versa. This does not mean that there is no skew though. Similar to all the other tests, Table~\ref{tab:math} shows that all outliers are greater than the mean. This is expected, as we would assume that external factors would occasionally decrease performance (no environment is truly isolated from outside performance impacts), but never increase performance as there are no random events that cause a program to speed up in a singular execution.
 
 \subsubsection{Lua}
 As expected, LuaJIT outperformed Lua. The impressive thing is LuaJIT likely performed much better than expressed. This is due to the fact that many executions were near or less than 5 milliseconds. Due to external factors, hyperfine can not accurately measure any execution shorter (or around) 5 milliseconds, becoming slightly inaccurate. This is because hyperfine can no longer predict the performance impact of running the command through itself rather than through standalone means.
 
-I will note that the high number of positive outliers, some of the being extremely distant from the mean, within Lua is a worry. Perhaps future research should attempt to find the culprit, as those outliers are numerous and great enough to have visible effects on performance in real life scenarios.
+I will note that the high number of positive outliers, some of them being extremely distant from the mean, within Lua is a worry. Perhaps future research should attempt to find the culprit, as those outliers are numerous and great enough to have visible effects on performance in real life scenarios.
 
-Finally, we see a repeat in the fact that LuaJIT (and Lua) perform this test much faster than the echo test when comparing Table~\ref{tab:echo} and Table~\ref{tab:math}. The performance difference is even more grave here as the script function is run just as many times as in the original echo test. This reinforces that the performance of passing strings to and from the host language and embedded language is a major pain-point. I would strongly encourage this functionality to be worked on, and for performance to be improved. I definitely believe that this issue impact real life performance scenarios.
+Finally, we see a repeat in the fact that LuaJIT (and Lua) perform this test much faster than the echo test when comparing Table~\ref{tab:echo} and Table~\ref{tab:math}. The performance difference is even more grave here as the script function is run just as many times as in the original echo test. This reinforces that the performance of passing strings to and from the host language and embedded language is a major pain-point. I would strongly encourage this functionality to be worked on, and for performance to be improved. I fully believe that this could issue impact real life performance scenarios.
 
 \begin{figure}[H]
 	\centering
@@ -119,7 +119,7 @@ The worry seen in Figure~\ref{fig:math-rust} is that despite executions forming 
 \end{figure}
 
 \subsubsection{Conclusion}
-Once again LuaJIT performed much stronger than Rune, its Rust competitor. Due to this test being based so heavily based on the performance metrics relevant to real life scenarios, I simply cannot recommend Rune for any task where performance of the embeddable language is important. Read Section~\ref{sec:discussion:importance} on possible reasons to use Rune instead of LuaJIT.
+Once again LuaJIT performed much stronger than Rune, its Rust competitor. Due to this test being so heavily based on the performance metrics relevant to real life scenarios, I simply cannot recommend Rune for any task where performance of the embeddable language is important at this time. Read Section~\ref{sec:discussion:importance} on possible reasons to use Rune instead of LuaJIT.
 
 \begin{figure}[H]
 	\centering

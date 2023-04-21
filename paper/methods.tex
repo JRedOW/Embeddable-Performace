@@ -5,9 +5,9 @@ This paper had two goals within its testing: to effectively test both embeddable
 All resources required to run the benchmarks within these tests are contained with the git repository attached to this work or downloaded automatically when running the tests (excluding those required to download and build the testing environment). The testing environment is created and run in Docker containers, which are isolated, fresh, virtualized environments running at the computer's kernel level, reducing the impact of outside factors on performance. This also allows for them to be run on any computer or server with the proper software installed. To reproduce these tests, please read the README.md attached to the repository.
 
 \subsection{Performance}
-To limit external factors, all tests are written with minimal coding in individual files in an officially supported fashion of each embeddable language. Every test is compiled into an isolated executable. Static linking is used when possible, to improve performance. 
+To limit external factors, all tests are written with minimal coding in individual files in an officially supported fashion of each embeddable language. Every test is compiled into an isolated executable. Static linking is used when possible to improve performance. 
 
-Each test file contains the required boilerplate code to initialize the embeddable language and give it the test script (code in an embeddable language) to run. If possible, it compiles the script into any forms for efficiency. It then runs the script a set number of times, attempting to give a good picture of the performance of repeat processing of the task.
+Each test file contains the required boilerplate code to initialize the embeddable language and give it the test script (code in an embeddable language) to run. If possible, it compiles the script into any form available for maximum efficiency. It then runs the script a set number of times, attempting to give a good picture of the performance of repeat processing of the task.
 
 \begin{listing}[H]
     \begin{minted}{C++}
@@ -30,7 +30,7 @@ Each test file contains the required boilerplate code to initialize the embeddab
             lua_pushlstring(L, s.c_str(), s.size());
 
             if (lua_pcall(L, 1, 1, 0) != 0) {
-                luaL_error(L, "failed to call echo: %s", lua_tostring(L, -1));
+                luaL_error(L, "...", lua_tostring(L, -1));
             }
 
             std::string res(lua_tostring(L, -1));
@@ -45,12 +45,12 @@ Each test file contains the required boilerplate code to initialize the embeddab
     \label{lst:luajit-echo}
 \end{listing}
 
-All tests are run by the software hyperfine\cite{hyperfine} which tracks how long an executable takes to run. The executable is first run a set number of times for "warmup," as greater fluctuations were observed without these runs. The executable is then run an larger number of times while being measured, giving a good picture of the mean and standard deviation of the execution time. These results are then written to a json file that can be parsed for greater study and visualizations.
+All tests are run by the software hyperfine\cite{hyperfine} which tracks how long an executable takes to run. The executable is first run a set number of times for "warmup," as greater fluctuations were observed without these runs. The executable is then run a larger number of times while being measured, giving a good picture of the mean and standard deviation of the execution time. These results are then written to a json file that can be parsed for greater study and visualizations.
 
 \subsubsection{Embeddable Performance}
 To test embeddable performance, there is an echo test. The embeddable language will take a string (all tests use the string "bench") as a parameter of a function, and simply return it. This tests three separate subsets of embeddable language performance on top of the systems used to initiate itself: the speed at which the the embeddable language can take data from the host language, the speed at which the embeddable language can send data to the host language, and the performance of converting strings, if necessary, from/to the host language. An example of this is shown in Listing~\ref{lst:luajit-echo}.
 
-This script written in the embeddable language is ran 100000 times per execution. This function has 100 warmups and 500 measured runs for each language.
+This script written in the embeddable language is run 100000 times per execution. This function has 100 warmups and 500 measured runs for each language.
 
 \subsubsection{Recursive Performance}
 To test recursive performance, there is a test containing a version of the Fibonacci Sequence using recursion. The embeddable language will take an integer (all tests use 15) as a parameter of a function, and return the sum of itself with the parameters repeated, subtracting one or two. If the parameter is less than 2, it simply returns the parameter. Observe an example of this process written in the embeddable language Lua below in Listing~\ref{lst:lua-fib}.
@@ -68,12 +68,12 @@ To test recursive performance, there is a test containing a version of the Fibon
     \label{lst:lua-fib}
 \end{listing}
 
-The act of a function referencing itself is known as recursion. While this version of the Fibonacci Sequence is extremely inefficient, and this level of recursion is never used in reasonable programming, it does exasperate the performance hit of recursion. Recursive functions punish the performance of the stack\cite{recursion:performance} and therefore this script exemplifies the performance of the stack. Since the stack is an important building block of embeddable languages (especially when we have deeply nested functions executed) this tests a common language performance barrios. Each time the function calls itself, another entry is added to the stack. This causes an exponential growth in push (additions to the stack) and pop (removal from the stack) calls during the execution of the script.
+The act of a function referencing itself is known as recursion. While this version of the Fibonacci Sequence is extremely inefficient, and this level of recursion is never used in reasonable programming, it does exacerbate the performance hit of recursion. Recursive functions punish the performance of the stack\cite{recursion:performance} and therefore this script exemplifies the performance of the stack. Since the stack is an important building block of embeddable languages (especially when we have deeply nested functions executed) this tests a common language performance barrier. Each time the function calls itself, another entry is added to the stack. This causes an exponential growth in push (additions to the stack) and pop (removal from the stack) calls during the execution of the script.
 
-This script written in the embeddable language is ran 1000 times per execution. This function has 10 warmups and 50 measured runs for each language. The low number of runs is due to poor performance in a few languages, which we will see in the data.
+This script written in the embeddable language is run 1000 times per execution. This function has 10 warmups and 50 measured runs for each language. The low number of runs is due to poor performance in a few languages, which we will see in the data.
 
 \subsubsection{Mathematical Performance}
-To test language performance at the purest form, there is a test containing a series of math equations. The embeddable language will take an float (which is a non-whole number in computers), all tests use 9, as a parameter of a function. This function repeatedly sets the parameter to itself, performing one of the 4 base mathematical functions (addition, subtraction, multiplication, and division). First it multiplies the parameter by 11. Next, it subtracts 1. Then it divides by 3, forcing the float to be rounded. Finally, it adds 5 and returns the final number. Observe an example of this process written in the embeddable language Lua below in Listing~\ref{lst:lua-math}.
+To test language performance at the purest form, there is a test containing a series of math equations. The embeddable language will take a float (which is a non-whole number in computers), all tests use 9, as a parameter of a function. This function repeatedly sets the parameter to itself, performing one of the 4 base mathematical functions (addition, subtraction, multiplication, and division). First it multiplies the parameter by 11. Next, it subtracts 1. Then it divides by 3, forcing the float to be rounded. Finally, it adds 5 and returns the final number. Observe an example of this process written in the embeddable language Lua below in Listing~\ref{lst:lua-math}.
 
 \begin{listing}[H]
     \begin{minted}{lua}
@@ -91,10 +91,10 @@ To test language performance at the purest form, there is a test containing a se
 
 This function also tests the performance of assignment, as the variable n is rewritten 4 times. Assigning variables and mathematical functions are commonly used in scripts that add functionality to host programs, even when the majority of logic is actually written in the host language. Therefore this test is critical to study.
 
-This script written in the embeddable language is ran 100000 times per execution. This function has 100 warmups and 500 measured runs for each language.
+This script written in the embeddable language is run 100000 times per execution. This function has 100 warmups and 500 measured runs for each language.
 
 \subsection{Languages}
-While I wish I could test every embeddable language, between my lack technical experience in certain fields required, complicated build process I do not know, the size of this paper, and a need to minimize the information overload this paper could create, it is simply not feasible to test every language. I therefore decided to test 4 embeddable languages that can be separated into 2 groups.
+While I wish I could test every embeddable language, between my lack of technical experience in certain fields required, complicated build process I do not know, the size of this paper, and a need to minimize the information overload this paper could create, it is simply not feasible to test every language. I therefore decided to test 4 embeddable languages that can be separated into 2 groups.
 
 The first group is Lua\cite{lua} and LuaJIT\cite{luaJIT}. Both embeddable systems allow for the embedding of the same language Lua. Lua is the official Lua interpreter, while LuaJIT is a semi-official system created by Mike Pall. LuaJIT is interesting as it uses JIT, or "Just In Time" compilation. This can lead to massive performance gains, but makes the program much more complicated, and causes issues on locked down platforms.
 
