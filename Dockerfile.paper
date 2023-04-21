@@ -34,6 +34,7 @@ RUN tlmgr install paralist
 RUN tlmgr install csvsimple
 RUN tlmgr install pgf
 RUN tlmgr install gobble
+RUN tlmgr install hyperref
 
 ADD ./paper/ /data/
 
